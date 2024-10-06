@@ -18,6 +18,10 @@ public class Cavalo implements Serializable {
     @Column (name="RA") //sim, aqui indica uma coluna :O
     private int id;
 
+    @ManyToOne
+    @JoinColumn(name="usuario_id") //coluna para armazenar o id do usuario
+    private Usuario usuario;
+
     @Column (name="Nome")
     private String nome;
 
