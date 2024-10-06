@@ -1,4 +1,4 @@
 package com.estabulo.estabulo.repository;
 
-public class CavaloRepository {
+public interface CavaloRepository {
 }
