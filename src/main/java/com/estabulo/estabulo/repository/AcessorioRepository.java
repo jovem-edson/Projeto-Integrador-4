@@ -1,4 +1,7 @@
 package com.estabulo.estabulo.repository;
 
-public interface AcessorioRepository {
+import com.estabulo.estabulo.model.Acessorio;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AcessorioRepository extends JpaRepository<Acessorio, Integer> {
 }

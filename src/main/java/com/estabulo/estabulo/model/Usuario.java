@@ -3,6 +3,7 @@ package com.estabulo.estabulo.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity (name="Usuario")
 public class Usuario implements Serializable {
@@ -13,7 +14,7 @@ public class Usuario implements Serializable {
     private int id;
 
     @OneToMany(mappedBy = "usuario") //um usuario poder ter vários cavalos
-    private List<Cavalos> cavalos; //lista de cavalos que o usuario tem
+    private List<Cavalo> cavalos; //lista de cavalos que o usuario tem
 
     @Column (name="Nome")
     private String nome;
