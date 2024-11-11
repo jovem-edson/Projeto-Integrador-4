@@ -13,9 +13,6 @@ public class Usuario implements Serializable {
     @Column (name="Id")
     private int id;
 
-    @OneToMany(mappedBy = "usuario") //um usuario poder ter vários cavalos
-    private List<Cavalo> cavalos; //lista de cavalos que o usuario tem
-
     @Column (name="Nome")
     private String nome;
 

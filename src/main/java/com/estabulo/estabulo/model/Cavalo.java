@@ -15,20 +15,19 @@ public class Cavalo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id //informa que este atributo será a PK da tabela
     @GeneratedValue (strategy = GenerationType.IDENTITY) //Essa anotação informa ao JPA que o valor do campo id deve ser gerado e incrementado automaticamente.
-    @Column (name="RA") //sim, aqui indica uma coluna :O
+    @Column (name="id") //sim, aqui indica uma coluna :O
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name="usuario_id") //coluna para armazenar o id do usuario
-    private Usuario usuario;
 
     @Column (name="Nome")
     private String nome;
 
-    @Column (name="Tipo")
+    @Column (name="Idade")
+    private int idade;
+
+    @Column (name="Tipo") //Corrida, Tração, Serviço
     private String tipo;
 
-    @Column (name="Raça")
+    @Column (name="Raca")
     private String raca;
 
     @Column (name="Pelagem")
@@ -40,20 +39,21 @@ public class Cavalo implements Serializable {
     @Column (name="Preço")
     private float preco;
 
-    @Column (name="Disponibilidade")
-    private boolean disponibilidade;
+    @Column (name="disponivel para compra")
+    private boolean disponivelParaCompra;
 
     public Cavalo() {
     }
 
-    public Cavalo(String nome, String tipo, String raca, String pelagem, String genero, float preco, boolean disponibilidade) {
+    public Cavalo(String nome, int idade, String tipo, String raca, String pelagem, String genero, float preco, boolean disponivelParaCompra) {
         this.nome = nome;
-        this.tipo = tipo;
-        this.raca = raca;
+        this.idade = idade;
+        this.tipo = tipo.toLowerCase();
+        this.raca = raca.toLowerCase();
         this.pelagem = pelagem;
         this.genero = genero;
         this.preco = preco;
-        this.disponibilidade = disponibilidade;
+        this.disponivelParaCompra = disponivelParaCompra;
     }
 
     public int getId() {return id;}
@@ -66,20 +66,36 @@ public class Cavalo implements Serializable {
         this.nome = nome;
     }
 
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+
     public String getTipo() {
-        return tipo;
+        if (tipo == null || tipo.isEmpty()) {
+            return tipo;
+        }
+
+        return tipo.substring(0, 1).toUpperCase() + tipo.substring(1).toLowerCase();
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = tipo.toLowerCase();
     }
 
     public String getRaca() {
-        return raca;
+        if (raca == null || raca.isEmpty()) {
+            return raca;
+        }
+
+        return raca.substring(0, 1).toUpperCase() + raca.substring(1).toLowerCase();
     }
 
     public void setRaca(String raca) {
-        this.raca = raca;
+        this.raca = raca.toLowerCase();
     }
 
     public String getPelagem() {
@@ -91,11 +107,15 @@ public class Cavalo implements Serializable {
     }
 
     public String getGenero() {
-        return genero;
+        if (genero == null || genero.isEmpty()) {
+            return genero;
+        }
+
+        return genero.substring(0, 1).toUpperCase() + genero.substring(1).toLowerCase();
     }
 
     public void setGenero(String genero) {
-        this.genero = genero;
+        this.genero = genero.toLowerCase();
     }
 
     public float getPreco() {
@@ -106,12 +126,12 @@ public class Cavalo implements Serializable {
         this.preco = preco;
     }
 
-    public boolean isDisponibilidade() {
-        return disponibilidade;
+    public boolean isDisponivelParaCompra() {
+        return disponivelParaCompra;
     }
 
-    public void setDisponibilidade(boolean disponibilidade) {
-        this.disponibilidade = disponibilidade;
+    public void setDisponivelParaCompra(boolean disponivelParaCompra) {
+        this.disponivelParaCompra = Cavalo.this.disponivelParaCompra;
     }
 
     @Override
@@ -119,12 +139,13 @@ public class Cavalo implements Serializable {
         return "Cavalo{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
+                ", idade=" + idade +
                 ", tipo='" + tipo + '\'' +
                 ", raca='" + raca + '\'' +
                 ", pelagem='" + pelagem + '\'' +
                 ", genero='" + genero + '\'' +
                 ", preco=" + preco +
-                ", disponibilidade=" + disponibilidade +
+                ", disponivelParaCompra=" + disponivelParaCompra +
                 '}';
     }
 }
