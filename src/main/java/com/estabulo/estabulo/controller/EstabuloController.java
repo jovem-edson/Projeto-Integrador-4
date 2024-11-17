@@ -84,38 +84,39 @@ public class EstabuloController {
             @RequestParam("disponivelParaCompra") boolean disponivelParaCompra,
             @RequestParam("imagem") MultipartFile imagem) throws IOException {
 
-        // Verificar se o arquivo foi recebido
         if (imagem.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);  // Retorna erro caso não haja imagem
+            return ResponseEntity.badRequest().body(null);
         }
 
-        // Gerar o nome do arquivo da imagem (pode ser o nome original ou um nome único)
+        // Gerar o nome do arquivo da imagem
         String imageName = imagem.getOriginalFilename();
 
-        // Definir o diretório onde as imagens serão salvas (exemplo: pasta 'uploads')
+        // Definir o diretório onde as imagens serão salvas
         String uploadDir = "uploads/";
         File uploadDirectory = new File(uploadDir);
         if (!uploadDirectory.exists()) {
-            uploadDirectory.mkdir();  // Cria o diretório caso não exista
+            uploadDirectory.mkdir();
         }
 
-        // Caminho para onde a imagem será salva
         Path imagePath = Paths.get(uploadDir + imageName);
-        Files.write(imagePath, imagem.getBytes());  // Salva a imagem no diretório
+        Files.write(imagePath, imagem.getBytes());
 
-        // Criar o objeto Cavalo, incluindo o caminho da imagem
-        Cavalo cavalo = new Cavalo(nome, idade, tipo, raca, pelagem, genero, preco, disponivelParaCompra, imageName);
+        // A URL completa da imagem
+        String imageUrl = "http://localhost:8080/uploads/" + imageName;
+
+        // Criar o objeto Cavalo
+        Cavalo cavalo = new Cavalo(nome, idade, tipo, raca, pelagem, genero, preco, disponivelParaCompra, imageUrl);
 
         // Salvar o cavalo no banco de dados
         cavalo = cavaloService.gravarCavalo(cavalo);
 
-        // Retornar a URI do recurso recém-criado
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(cavalo.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(cavalo);
     }
+
 
 
 
