@@ -5,9 +5,15 @@ import com.estabulo.estabulo.service.cavalo.CavaloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -65,13 +71,53 @@ public class EstabuloController {
     }
 
     // CREATE
+    // Método para cadastrar o cavalo com imagem
     @PostMapping
-    public ResponseEntity<Cavalo> gravarCavalo(@RequestBody Cavalo cavalo) {
+    public ResponseEntity<Cavalo> gravarCavalo(
+            @RequestParam("nome") String nome,
+            @RequestParam("idade") int idade,
+            @RequestParam("tipo") String tipo,
+            @RequestParam("raca") String raca,
+            @RequestParam("pelagem") String pelagem,
+            @RequestParam("genero") String genero,
+            @RequestParam("preco") float preco,
+            @RequestParam("disponivelParaCompra") boolean disponivelParaCompra,
+            @RequestParam("imagem") MultipartFile imagem) throws IOException {
+
+        // Verificar se o arquivo foi recebido
+        if (imagem.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);  // Retorna erro caso não haja imagem
+        }
+
+        // Gerar o nome do arquivo da imagem (pode ser o nome original ou um nome único)
+        String imageName = imagem.getOriginalFilename();
+
+        // Definir o diretório onde as imagens serão salvas (exemplo: pasta 'uploads')
+        String uploadDir = "uploads/";
+        File uploadDirectory = new File(uploadDir);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdir();  // Cria o diretório caso não exista
+        }
+
+        // Caminho para onde a imagem será salva
+        Path imagePath = Paths.get(uploadDir + imageName);
+        Files.write(imagePath, imagem.getBytes());  // Salva a imagem no diretório
+
+        // Criar o objeto Cavalo, incluindo o caminho da imagem
+        Cavalo cavalo = new Cavalo(nome, idade, tipo, raca, pelagem, genero, preco, disponivelParaCompra, imageName);
+
+        // Salvar o cavalo no banco de dados
         cavalo = cavaloService.gravarCavalo(cavalo);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cavalo.getId()).toUri();
+
+        // Retornar a URI do recurso recém-criado
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(cavalo.getId())
+                .toUri();
 
         return ResponseEntity.created(uri).body(cavalo);
     }
+
+
 
     // DELETE
     @DeleteMapping(value = "/{id}")
