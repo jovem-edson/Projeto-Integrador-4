@@ -79,6 +79,7 @@ public class CavaloService {
             alterado.setGenero(cavalo.getGenero());
             alterado.setPreco(cavalo.getPreco());
             alterado.setDisponivelParaCompra(cavalo.isDisponivelParaCompra());
+            alterado.setImagem(cavalo.getImagem());
             return cavaloRepository.save(alterado);
         }
         return null;

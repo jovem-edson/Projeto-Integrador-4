@@ -42,10 +42,13 @@ public class Cavalo implements Serializable {
     @Column (name="disponivel para compra")
     private boolean disponivelParaCompra;
 
+    @Column (name="Imagem")
+    private String imagem;
+
     public Cavalo() {
     }
 
-    public Cavalo(String nome, int idade, String tipo, String raca, String pelagem, String genero, float preco, boolean disponivelParaCompra) {
+    public Cavalo(String nome, int idade, String tipo, String raca, String pelagem, String genero, float preco, boolean disponivelParaCompra, String imagem) {
         this.nome = nome;
         this.idade = idade;
         this.tipo = tipo.toLowerCase();
@@ -54,6 +57,7 @@ public class Cavalo implements Serializable {
         this.genero = genero;
         this.preco = preco;
         this.disponivelParaCompra = disponivelParaCompra;
+        this.imagem = imagem;
     }
 
     public int getId() {return id;}
@@ -131,7 +135,15 @@ public class Cavalo implements Serializable {
     }
 
     public void setDisponivelParaCompra(boolean disponivelParaCompra) {
-        this.disponivelParaCompra = Cavalo.this.disponivelParaCompra;
+        this.disponivelParaCompra = disponivelParaCompra;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     @Override
@@ -144,8 +156,9 @@ public class Cavalo implements Serializable {
                 ", raca='" + raca + '\'' +
                 ", pelagem='" + pelagem + '\'' +
                 ", genero='" + genero + '\'' +
-                ", preco=" + preco +
-                ", disponivelParaCompra=" + disponivelParaCompra +
+                ", preco=" + preco + '\'' +
+                ", disponivelParaCompra=" + disponivelParaCompra + '\'' +
+                ", imagem=" + imagem +
                 '}';
     }
 }

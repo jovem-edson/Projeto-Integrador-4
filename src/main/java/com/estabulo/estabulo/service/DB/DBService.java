@@ -19,8 +19,8 @@ public class DBService {
     @Bean
     public void instanciarDB() {
 
-        Cavalo cavalo1 = new Cavalo("Ilirio", 4, "Trabalho", "Turcomeno", "Branco", "Fêmea", 1250.63F, true);
-        Cavalo cavalo2 = new Cavalo("Relâmpago", 4, "Corrida", "Boliviano", "Marrom", "Macho", 1250.63F, false);
+        Cavalo cavalo1 = new Cavalo("Ilirio", 4, "Trabalho", "Turcomeno", "Branco", "Fêmea", 1250.63F, true, "https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2022/09/American-Idiot-Green-Day.jpg");
+        Cavalo cavalo2 = new Cavalo("Relâmpago", 4, "Corrida", "Boliviano", "Marrom", "Macho", 1250.63F, false, "https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2022/09/American-Idiot-Green-Day.jpg");
 
         cavaloRepository.saveAll(Arrays.asList(cavalo1, cavalo2));
     }
