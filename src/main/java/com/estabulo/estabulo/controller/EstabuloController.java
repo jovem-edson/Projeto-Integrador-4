@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/cavalo")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:58386", "http://localhost:61000", "http://localhost:61357", "http://localhost:61562", "http://localhost:63139", "http://localhost:65032"})
+@CrossOrigin(origins = "*", maxAge = 33600)
 
 public class EstabuloController {
     @Autowired
@@ -129,9 +129,52 @@ public class EstabuloController {
 
     // UPDATE
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable Integer id, @RequestBody Cavalo cavalo) {
-        Cavalo alterado = cavaloService.update(id, cavalo);
+    public ResponseEntity<Void> update(
+            @PathVariable Integer id,
+            @RequestParam("nome") String nome,
+            @RequestParam("idade") int idade,
+            @RequestParam("tipo") String tipo,
+            @RequestParam("raca") String raca,
+            @RequestParam("pelagem") String pelagem,
+            @RequestParam("genero") String genero,
+            @RequestParam("preco") float preco,
+            @RequestParam("disponivelParaCompra") boolean disponivelParaCompra,
+            @RequestParam(value = "imagem", required = false) MultipartFile imagem
+    ) throws IOException {
 
+        Cavalo cavalo = findById(id).getBody();
+        if (cavalo == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Atualizar os campos básicos
+        cavalo.setNome(nome);
+        cavalo.setIdade(idade);
+        cavalo.setTipo(tipo);
+        cavalo.setRaca(raca);
+        cavalo.setPelagem(pelagem);
+        cavalo.setGenero(genero);
+        cavalo.setPreco(preco);
+        cavalo.setDisponivelParaCompra(disponivelParaCompra);
+
+        if (imagem != null && !imagem.isEmpty()) {
+            String uploadDir = "uploads/";
+            String imageName = imagem.getOriginalFilename();
+
+            // Verifique se a imagem tem uma extensão válida
+            if (imageName.endsWith(".jpg") || imageName.endsWith(".png") || imageName.endsWith(".jpeg")) {
+                Path imagePath = Paths.get(uploadDir + imageName);
+                Files.write(imagePath, imagem.getBytes());
+
+                String imageUrl = "http://localhost:8080/uploads/" + imageName;
+                cavalo.setImagem(imageUrl);
+            } else {
+                return ResponseEntity.badRequest().body(null); // Retorne erro se o tipo de imagem não for aceito
+            }
+        }
+
+
+        cavaloService.update(id, cavalo);
         return ResponseEntity.noContent().build();
     }
 
