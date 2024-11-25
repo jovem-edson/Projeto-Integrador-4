@@ -25,8 +25,8 @@ public class DBService {
     @Bean
     public void instanciarDB() {
 
-        Cavalo cavalo1 = new Cavalo("Ilirio", 4, "Trabalho", "Turcomeno", "Branco", "Fêmea", 1250.63F, true, "https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2022/09/American-Idiot-Green-Day.jpg");
-        Cavalo cavalo2 = new Cavalo("Relâmpago", 4, "Corrida", "Boliviano", "Marrom", "Macho", 1250.63F, false, "https://www.tenhomaisdiscosqueamigos.com/wp-content/uploads/2022/09/American-Idiot-Green-Day.jpg");
+        Cavalo cavalo1 = new Cavalo("Ilirio", 4, "Trabalho", "Turcomeno", "Branco", "Fêmea", 1250.63F, true, "https://www.cabanhasantaedwiges.com.br/site/images/pais-da-cabanha/j-a-relampago.jpg");
+        Cavalo cavalo2 = new Cavalo("Relâmpago", 4, "Corrida", "Boliviano", "Marrom", "Macho", 1250.63F, false, "https://img.freepik.com/fotos-premium/cavalo-galopante-irlandes-funileiro-egua-irlandesa-funileiro-equus-przewalskii-f-caballus_621486-3723.jpg");
 
         Usuario usuario1 = new Usuario("login@email.com", "senha");
 
